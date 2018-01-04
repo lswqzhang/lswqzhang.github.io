@@ -325,6 +325,158 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lswqzhang.github.io/2018/01/03/netty启动绑定端口分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="张韶伟">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="张韶伟的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/03/netty启动绑定端口分析/" itemprop="url">netty启动绑定端口分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-03T00:35:09+08:00">
+                2018-01-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/Netty/" itemprop="url" rel="index">
+                    <span itemprop="name">Netty</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://lswqzhang.github.io/2017/12/31/netty启动与java nio启动对对比/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -532,6 +684,14 @@
 <p>​    在Netty看来绑定端口仍然是一个任务，通过SingleThreadEventExecutor#addTask添加到Queue中，并在NioEventLoop#run启动runAllTasks启动任务。因此只需关注channel中提供的bind方法即可（在这里一定要理解任务任务启动的方式，以及Netty把bind也看作一个task）。</p>
 <p>​    NioServerSocketChannel#doBind(SocketAddress)方法进行绑定IP及port的。</p>
 <p>至于怎么调用doBind则是一个比较复杂的操作，有机会再分析。</p>
+<h2 id="Netty启动拾遗"><a href="#Netty启动拾遗" class="headerlink" title="Netty启动拾遗"></a>Netty启动拾遗</h2><p>在AbstractNioChannel#doRegister()注册时：</p>
+<p>javaChannel().register(eventLoop().unwrappedSelector(), 0, this);</p>
+<p>NioServerSocketChannel#doBind();绑定端口时：</p>
+<p>javaChannel().bind(localAddress, config.getBacklog());</p>
+<p>这里两个都是使用的javaChannel();现在分析进行使用javaChannel进行注册和绑定端口</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1fn3udw12jej30em0j2gmk.jpg" alt=""></p>
+<p>在AbstractNioChannel类以及子类均可以获取SelectableChannel，就是javaChannel();</p>
+<p>NioServerSocketChannel#newSocket()方法中通过SelectorProvider.provider().openServerSocketChannel();</p>
 
           
         
@@ -613,7 +773,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

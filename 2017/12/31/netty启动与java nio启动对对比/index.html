@@ -92,7 +92,8 @@
 <meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcly1fn11hi036jj31kw0ogq6g.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcly1fn1inqesefj31kw0qv76u.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcly1fn2pv911xyj312w0t8wh6.jpg">
-<meta property="og:updated_time" content="2018-01-02T16:31:26.241Z">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcly1fn3udw12jej30em0j2gmk.jpg">
+<meta property="og:updated_time" content="2018-01-03T15:57:25.637Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="netty启动与JavaNio启动比对">
 <meta name="twitter:description" content="netty启动与JavaNio启动比对​    这是一个netty启动和JavaNio启动一个Socket服务的简单对比，不包含详细的分析，提供自己对Netty的简单的分析。 开启一个服务套接字ServerSocketChannel在Netty中主要使用的类：NioServerSocketChannel JavaNio开启一个服务套接字通道SocketChannel1ServerSocketCha">
@@ -536,6 +537,14 @@
 <p>​    在Netty看来绑定端口仍然是一个任务，通过SingleThreadEventExecutor#addTask添加到Queue中，并在NioEventLoop#run启动runAllTasks启动任务。因此只需关注channel中提供的bind方法即可（在这里一定要理解任务任务启动的方式，以及Netty把bind也看作一个task）。</p>
 <p>​    NioServerSocketChannel#doBind(SocketAddress)方法进行绑定IP及port的。</p>
 <p>至于怎么调用doBind则是一个比较复杂的操作，有机会再分析。</p>
+<h2 id="Netty启动拾遗"><a href="#Netty启动拾遗" class="headerlink" title="Netty启动拾遗"></a>Netty启动拾遗</h2><p>在AbstractNioChannel#doRegister()注册时：</p>
+<p>javaChannel().register(eventLoop().unwrappedSelector(), 0, this);</p>
+<p>NioServerSocketChannel#doBind();绑定端口时：</p>
+<p>javaChannel().bind(localAddress, config.getBacklog());</p>
+<p>这里两个都是使用的javaChannel();现在分析进行使用javaChannel进行注册和绑定端口</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1fn3udw12jej30em0j2gmk.jpg" alt=""></p>
+<p>在AbstractNioChannel类以及子类均可以获取SelectableChannel，就是javaChannel();</p>
+<p>NioServerSocketChannel#newSocket()方法中通过SelectorProvider.provider().openServerSocketChannel();</p>
 
       
     </div>
@@ -564,6 +573,22 @@
       
       
 
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/03/netty启动绑定端口分析/" rel="prev" title="netty启动绑定端口分析">
+                netty启动绑定端口分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
       
 
       
@@ -637,7 +662,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -699,7 +724,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#netty启动与JavaNio启动比对"><span class="nav-number">1.</span> <span class="nav-text">netty启动与JavaNio启动比对</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#开启一个服务套接字ServerSocketChannel"><span class="nav-number">1.1.</span> <span class="nav-text">开启一个服务套接字ServerSocketChannel</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaNio开启一个服务套接字通道SocketChannel"><span class="nav-number">1.1.1.</span> <span class="nav-text">JavaNio开启一个服务套接字通道SocketChannel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Netty开启一个服务套接字通道的方式"><span class="nav-number">1.1.2.</span> <span class="nav-text">Netty开启一个服务套接字通道的方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开启一个服务套接字Selector"><span class="nav-number">1.2.</span> <span class="nav-text">开启一个服务套接字Selector</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaNio开启一个服务套接字通道Selector"><span class="nav-number">1.2.1.</span> <span class="nav-text">JavaNio开启一个服务套接字通道Selector</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Netty开启一个服务套接字通道的方式-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">Netty开启一个服务套接字通道的方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将channel注册到selector中"><span class="nav-number">1.3.</span> <span class="nav-text">将channel注册到selector中</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaNio将一个ServerSocketChannel注册到Selector中"><span class="nav-number">1.3.1.</span> <span class="nav-text">JavaNio将一个ServerSocketChannel注册到Selector中</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Netty是如何注册一个ServerSocketChannel的呢？"><span class="nav-number">1.4.</span> <span class="nav-text">Netty是如何注册一个ServerSocketChannel的呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在循环中有Selector进行select操作，进行事件监听"><span class="nav-number">1.5.</span> <span class="nav-text">在循环中有Selector进行select操作，进行事件监听</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#java-nio-进行selector进行select等待及事件处理"><span class="nav-number">1.5.1.</span> <span class="nav-text">java nio 进行selector进行select等待及事件处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Netty是如何进行select的呢？"><span class="nav-number">1.5.2.</span> <span class="nav-text">Netty是如何进行select的呢？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在进行Select操作时，需要绑定特定事件，那么Netty是如何绑定事件的呢？"><span class="nav-number">1.5.3.</span> <span class="nav-text">在进行Select操作时，需要绑定特定事件，那么Netty是如何绑定事件的呢？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何绑定端口到NioServerSocketChannel的呢？"><span class="nav-number">1.6.</span> <span class="nav-text">如何绑定端口到NioServerSocketChannel的呢？</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#netty启动与JavaNio启动比对"><span class="nav-number">1.</span> <span class="nav-text">netty启动与JavaNio启动比对</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#开启一个服务套接字ServerSocketChannel"><span class="nav-number">1.1.</span> <span class="nav-text">开启一个服务套接字ServerSocketChannel</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaNio开启一个服务套接字通道SocketChannel"><span class="nav-number">1.1.1.</span> <span class="nav-text">JavaNio开启一个服务套接字通道SocketChannel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Netty开启一个服务套接字通道的方式"><span class="nav-number">1.1.2.</span> <span class="nav-text">Netty开启一个服务套接字通道的方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开启一个服务套接字Selector"><span class="nav-number">1.2.</span> <span class="nav-text">开启一个服务套接字Selector</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaNio开启一个服务套接字通道Selector"><span class="nav-number">1.2.1.</span> <span class="nav-text">JavaNio开启一个服务套接字通道Selector</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Netty开启一个服务套接字通道的方式-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">Netty开启一个服务套接字通道的方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将channel注册到selector中"><span class="nav-number">1.3.</span> <span class="nav-text">将channel注册到selector中</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaNio将一个ServerSocketChannel注册到Selector中"><span class="nav-number">1.3.1.</span> <span class="nav-text">JavaNio将一个ServerSocketChannel注册到Selector中</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Netty是如何注册一个ServerSocketChannel的呢？"><span class="nav-number">1.4.</span> <span class="nav-text">Netty是如何注册一个ServerSocketChannel的呢？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在循环中有Selector进行select操作，进行事件监听"><span class="nav-number">1.5.</span> <span class="nav-text">在循环中有Selector进行select操作，进行事件监听</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#java-nio-进行selector进行select等待及事件处理"><span class="nav-number">1.5.1.</span> <span class="nav-text">java nio 进行selector进行select等待及事件处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Netty是如何进行select的呢？"><span class="nav-number">1.5.2.</span> <span class="nav-text">Netty是如何进行select的呢？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在进行Select操作时，需要绑定特定事件，那么Netty是如何绑定事件的呢？"><span class="nav-number">1.5.3.</span> <span class="nav-text">在进行Select操作时，需要绑定特定事件，那么Netty是如何绑定事件的呢？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何绑定端口到NioServerSocketChannel的呢？"><span class="nav-number">1.6.</span> <span class="nav-text">如何绑定端口到NioServerSocketChannel的呢？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty启动拾遗"><span class="nav-number">2.</span> <span class="nav-text">Netty启动拾遗</span></a></li></ol></div>
             
 
           </div>
