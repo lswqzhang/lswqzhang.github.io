@@ -81,22 +81,22 @@
 
 
 
-<meta name="description" content="netty启动与JavaNio启动比对​    这是一个netty启动和JavaNio启动一个Socket服务的简单对比，不包含详细的分析，提供自己对Netty的简单的分析。 开启一个服务套接字ServerSocketChannel在Netty中主要使用的类：NioServerSocketChannel JavaNio开启一个服务套接字通道SocketChannel1ServerSocketCha">
+<meta name="description" content="[TOC] netty启动与JavaNio启动比对​    这是一个netty启动和JavaNio启动一个Socket服务的简单对比，不包含详细的分析，提供自己对Netty的简单的分析。 开启一个服务套接字ServerSocketChannel在Netty中主要使用的类：NioServerSocketChannel JavaNio开启一个服务套接字通道SocketChannel1ServerSoc">
 <meta name="keywords" content="Java,Netty">
 <meta property="og:type" content="article">
 <meta property="og:title" content="netty启动与JavaNio启动比对">
 <meta property="og:url" content="https://lswqzhang.github.io/2017/12/31/netty启动与java nio启动对对比/index.html">
 <meta property="og:site_name" content="张韶伟的博客">
-<meta property="og:description" content="netty启动与JavaNio启动比对​    这是一个netty启动和JavaNio启动一个Socket服务的简单对比，不包含详细的分析，提供自己对Netty的简单的分析。 开启一个服务套接字ServerSocketChannel在Netty中主要使用的类：NioServerSocketChannel JavaNio开启一个服务套接字通道SocketChannel1ServerSocketCha">
+<meta property="og:description" content="[TOC] netty启动与JavaNio启动比对​    这是一个netty启动和JavaNio启动一个Socket服务的简单对比，不包含详细的分析，提供自己对Netty的简单的分析。 开启一个服务套接字ServerSocketChannel在Netty中主要使用的类：NioServerSocketChannel JavaNio开启一个服务套接字通道SocketChannel1ServerSoc">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcly1fn11hi036jj31kw0ogq6g.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcly1fn1inqesefj31kw0qv76u.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcly1fn2pv911xyj312w0t8wh6.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcly1fn3udw12jej30em0j2gmk.jpg">
-<meta property="og:updated_time" content="2018-01-06T18:12:44.370Z">
+<meta property="og:updated_time" content="2018-01-07T15:49:57.866Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="netty启动与JavaNio启动比对">
-<meta name="twitter:description" content="netty启动与JavaNio启动比对​    这是一个netty启动和JavaNio启动一个Socket服务的简单对比，不包含详细的分析，提供自己对Netty的简单的分析。 开启一个服务套接字ServerSocketChannel在Netty中主要使用的类：NioServerSocketChannel JavaNio开启一个服务套接字通道SocketChannel1ServerSocketCha">
+<meta name="twitter:description" content="[TOC] netty启动与JavaNio启动比对​    这是一个netty启动和JavaNio启动一个Socket服务的简单对比，不包含详细的分析，提供自己对Netty的简单的分析。 开启一个服务套接字ServerSocketChannel在Netty中主要使用的类：NioServerSocketChannel JavaNio开启一个服务套接字通道SocketChannel1ServerSoc">
 <meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tKfTcly1fn11hi036jj31kw0ogq6g.jpg">
 
 
@@ -434,7 +434,8 @@
       
 
       
-        <h2 id="netty启动与JavaNio启动比对"><a href="#netty启动与JavaNio启动比对" class="headerlink" title="netty启动与JavaNio启动比对"></a>netty启动与JavaNio启动比对</h2><p>​    这是一个netty启动和JavaNio启动一个Socket服务的简单对比，不包含详细的分析，提供自己对Netty的简单的分析。</p>
+        <p>[TOC]</p>
+<h2 id="netty启动与JavaNio启动比对"><a href="#netty启动与JavaNio启动比对" class="headerlink" title="netty启动与JavaNio启动比对"></a>netty启动与JavaNio启动比对</h2><p>​    这是一个netty启动和JavaNio启动一个Socket服务的简单对比，不包含详细的分析，提供自己对Netty的简单的分析。</p>
 <h3 id="开启一个服务套接字ServerSocketChannel"><a href="#开启一个服务套接字ServerSocketChannel" class="headerlink" title="开启一个服务套接字ServerSocketChannel"></a>开启一个服务套接字ServerSocketChannel</h3><p>在Netty中主要使用的类：NioServerSocketChannel</p>
 <h4 id="JavaNio开启一个服务套接字通道SocketChannel"><a href="#JavaNio开启一个服务套接字通道SocketChannel" class="headerlink" title="JavaNio开启一个服务套接字通道SocketChannel"></a>JavaNio开启一个服务套接字通道SocketChannel</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ServerSocketChannel ssc = ServerSocketChannel.open();</span><br></pre></td></tr></table></figure>
 <p>​    ServerSocketChannel.open()的内部实现使用的是SelectorProvider.provider()的方法进行实现一个SelectorProvicer的单例</p>
