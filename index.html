@@ -325,6 +325,158 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lswqzhang.github.io/2018/01/09/netty客户端连接分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="张韶伟">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="张韶伟的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/09/netty客户端连接分析/" itemprop="url">netty客户端连接分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-09T23:30:00+08:00">
+                2018-01-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/Netty/" itemprop="url" rel="index">
+                    <span itemprop="name">Netty</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://lswqzhang.github.io/2018/01/03/netty启动绑定端口分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -793,8 +945,7 @@
 <p>​    ==<u>在这一节出现一个重要的类，这个类就是SingleThreadEventExecutor，这个类中有一个Queue，这是一个生产者消费者的容器，用于存储每一个任务，Netty中的任务都是存储在这个Queue中，即一个EventLoop可以执行多个任务</u>。==</p>
 <h4 id="在进行Select操作时，需要绑定特定事件，那么Netty是如何绑定事件的呢？"><a href="#在进行Select操作时，需要绑定特定事件，那么Netty是如何绑定事件的呢？" class="headerlink" title="在进行Select操作时，需要绑定特定事件，那么Netty是如何绑定事件的呢？"></a>在进行Select操作时，需要绑定特定事件，那么Netty是如何绑定事件的呢？</h4><p>​    在NioEventLoop#run方法中调用processSelectedKey方法，见名可知这是处理select选择器事件的方法。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">processSelectedKey</span><span class="params">(SelectionKey k, AbstractNioChannel ch)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> AbstractNioChannel.NioUnsafe unsafe = ch.unsafe();</span><br><span class="line">    <span class="keyword">if</span> (!k.isValid()) &#123;</span><br><span class="line">        <span class="keyword">final</span> EventLoop eventLoop;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            eventLoop = ch.eventLoop();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable ignored) &#123;</span><br><span class="line">            <span class="comment">// If the channel implementation throws an exception because there is no event loop, we ignore this</span></span><br><span class="line">            <span class="comment">// because we are only trying to determine if ch is registered to this event loop and thus has authority</span></span><br><span class="line">            <span class="comment">// to close ch.</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Only close ch if ch is still registered to this EventLoop. ch could have deregistered from the event loop</span></span><br><span class="line">        <span class="comment">// and thus the SelectionKey could be cancelled as part of the deregistration process, but the channel is</span></span><br><span class="line">        <span class="comment">// still healthy and should not be closed.</span></span><br><span class="line">        <span class="comment">// See https://github.com/netty/netty/issues/5125</span></span><br><span class="line">        <span class="keyword">if</span> (eventLoop != <span class="keyword">this</span> || eventLoop == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// close the channel if the key is not valid anymore</span></span><br><span class="line">        unsafe.close(unsafe.voidPromise());</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">int</span> readyOps = k.readyOps();</span><br><span class="line">        <span class="comment">// We first need to call finishConnect() before try to trigger a read(...) or write(...) as otherwise</span></span><br><span class="line">        <span class="comment">// the NIO JDK channel implementation may throw a NotYetConnectedException.</span></span><br><span class="line">        <span class="keyword">if</span> ((readyOps &amp; SelectionKey.OP_CONNECT) != <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">// remove OP_CONNECT as otherwise Selector.select(..) will always return without blocking</span></span><br><span class="line">            <span class="comment">// See https://github.com/netty/netty/issues/924</span></span><br><span class="line">            <span class="keyword">int</span> ops = k.interestOps();</span><br><span class="line">            ops &amp;= ~SelectionKey.OP_CONNECT;</span><br><span class="line">            k.interestOps(ops);</span><br><span class="line"></span><br><span class="line">            unsafe.finishConnect();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Process OP_WRITE first as we may be able to write some queued buffers and so free memory.</span></span><br><span class="line">        <span class="keyword">if</span> ((readyOps &amp; SelectionKey.OP_WRITE) != <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">// Call forceFlush which will also take care of clear the OP_WRITE once there is nothing left to write</span></span><br><span class="line">            ch.unsafe().forceFlush();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Also check for readOps of 0 to workaround possible JDK bug which may otherwise lead</span></span><br><span class="line">        <span class="comment">// to a spin loop</span></span><br><span class="line">        <span class="keyword">if</span> ((readyOps &amp; (SelectionKey.OP_READ | SelectionKey.OP_ACCEPT)) != <span class="number">0</span> || readyOps == <span class="number">0</span>) &#123;</span><br><span class="line">            unsafe.read();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (CancelledKeyException ignored) &#123;</span><br><span class="line">        unsafe.close(unsafe.voidPromise());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>此时可以总结一下：</p>
-<p>主要的几个类：</p>
+<h3 id="此时可以总结一下："><a href="#此时可以总结一下：" class="headerlink" title="此时可以总结一下："></a>此时可以总结一下：</h3><p>主要的几个类：</p>
 <p>NioEventLoop：</p>
 <ol>
 <li>开启了一个select选择器</li>
@@ -910,7 +1061,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
