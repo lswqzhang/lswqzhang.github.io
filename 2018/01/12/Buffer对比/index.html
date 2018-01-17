@@ -11,7 +11,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
-
+<link href="https://cdn.rawgit.com/knsv/mermaid/7.0.0/dist/mermaid.css" rel="stylesheet" type="text/css" />
 
 
 
@@ -74,22 +74,27 @@
 
 
 
-  <link rel="alternate" href="/atom.xml" title="张韶伟的博客" type="application/atom+xml" />
+  <link rel="alternate" href="/atom.xml" title="流水无情的博客" type="application/atom+xml" />
 
 
 
 
 
 
+<meta name="description" content="[TOC] Netty核心组件Netty核心组件包含Channel，每一个Channel包含一个ChannelPipeline，而Channel的读写是通过ByteBuf进行操作的，由此可以看到Channel是Netty最核心的组件。 同样在JavaNio中最重要的也是Channel，Channel注册到Selector，而Channel的读写是通过Buffer。 JavaNio的Channel与">
 <meta name="keywords" content="Java,Netty">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Channel分析">
-<meta property="og:url" content="https://lswqzhang.github.io/2018/01/12/Channel分析/index.html">
-<meta property="og:site_name" content="张韶伟的博客">
+<meta property="og:url" content="https://lswqzhang.github.io/2018/01/12/Buffer对比/index.html">
+<meta property="og:site_name" content="流水无情的博客">
+<meta property="og:description" content="[TOC] Netty核心组件Netty核心组件包含Channel，每一个Channel包含一个ChannelPipeline，而Channel的读写是通过ByteBuf进行操作的，由此可以看到Channel是Netty最核心的组件。 同样在JavaNio中最重要的也是Channel，Channel注册到Selector，而Channel的读写是通过Buffer。 JavaNio的Channel与">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-13T06:11:37.289Z">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fniwl90tq5j31kw0uaq90.jpg">
+<meta property="og:updated_time" content="2018-01-16T16:36:55.734Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Channel分析">
+<meta name="twitter:description" content="[TOC] Netty核心组件Netty核心组件包含Channel，每一个Channel包含一个ChannelPipeline，而Channel的读写是通过ByteBuf进行操作的，由此可以看到Channel是Netty最核心的组件。 同样在JavaNio中最重要的也是Channel，Channel注册到Selector，而Channel的读写是通过Buffer。 JavaNio的Channel与">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fniwl90tq5j31kw0uaq90.jpg">
 
 
 
@@ -119,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="https://lswqzhang.github.io/2018/01/12/Channel分析/"/>
+  <link rel="canonical" href="https://lswqzhang.github.io/2018/01/12/Buffer对比/"/>
 
 
 
 
 
-  <title>Channel分析 | 张韶伟的博客</title>
+  <title>Channel分析 | 流水无情的博客</title>
   
 
 
@@ -155,7 +160,7 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">张韶伟的博客</span>
+        <span class="site-title">流水无情的博客</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -326,7 +331,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lswqzhang.github.io/2018/01/12/Channel分析/">
+    <link itemprop="mainEntityOfPage" href="https://lswqzhang.github.io/2018/01/12/Buffer对比/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="张韶伟">
@@ -335,7 +340,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="张韶伟的博客">
+      <meta itemprop="name" content="流水无情的博客">
     </span>
 
     
@@ -426,7 +431,38 @@
       
 
       
-        
+        <p>[TOC]</p>
+<h1 id="Netty核心组件"><a href="#Netty核心组件" class="headerlink" title="Netty核心组件"></a>Netty核心组件</h1><p>Netty核心组件包含Channel，每一个Channel包含一个ChannelPipeline，而Channel的读写是通过ByteBuf进行操作的，由此可以看到Channel是Netty最核心的组件。</p>
+<p>同样在JavaNio中最重要的也是Channel，Channel注册到Selector，而Channel的读写是通过Buffer。</p>
+<h2 id="JavaNio的Channel与Netty的Channel对比"><a href="#JavaNio的Channel与Netty的Channel对比" class="headerlink" title="JavaNio的Channel与Netty的Channel对比"></a>JavaNio的Channel与Netty的Channel对比</h2><p>Netty重新定义了Channel，和java nio提供的Channel几乎完全不一样，哪Netty为什么自己实现Channel呢？</p>
+<ul>
+<li>java nio channel和netty channel完全不一样，netty对channel进行了重新实现，java nio channel并没有进行了完全的封装，而netty作为一个通信框架，对channel进行了完全的封装。为SocketChannel和ServerSocketChannel进行了统一的封装，提供了统一的操作视图，而java nio channel没有。</li>
+<li>JDK的SocketChannel和ServerSocketChannel的主要职责就是网络I/O操作，它们是通过SPI类接口，由具体的虚拟机厂家提供的，所以其实现难度没有太大区别。</li>
+<li>而Netty Channel需要和Netty整体框架融合在一起，所以需要对Channel进行重新封装。</li>
+<li>自定义Channel更加灵活。</li>
+</ul>
+<h2 id="Netty自己实现了Channel。"><a href="#Netty自己实现了Channel。" class="headerlink" title="Netty自己实现了Channel。"></a>Netty自己实现了Channel。</h2><p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1fniwl90tq5j31kw0uaq90.jpg" alt=""></p>
+ <center>Netty Channel类图</center>
+
+<p>UnSafe中Channel的一个内部内，UnSafe进行读写操作的。</p>
+<p>有两个重要的实现类：</p>
+<ul>
+<li>NioServerSokcetChannel和NioSocketChannel，这两个类可以类比java nio中的ServerSocketChannel和SocketChannel。</li>
+<li>NioMessageUnsafe是AbstractNioMessageChannel内部类</li>
+<li>NioByteUnsafe是AbstractNioByteChannel的内部类</li>
+<li>AbstractNioUnsafe是AbstractNioChannel的内部类</li>
+<li>AbstractUnsafe是AbstractChannel的内部类</li>
+<li>AbstractUnsafe进行register到NioEventLoop上以及bind端口操作</li>
+<li>AbstractChannel$AbstractUnsafe#register0()进行注册到EventLoop上</li>
+<li>NioServerSocketChannel#doBind()进行编写端口操作</li>
+</ul>
+<h2 id="java-nio-channel"><a href="#java-nio-channel" class="headerlink" title="java nio channel"></a>java nio channel</h2><ul>
+<li>ServerSocketChannel绑定端口</li>
+<li>ServerSocketChannel注册到selector上</li>
+<li>SocketChannel注册到selector</li>
+</ul>
+<p>由上面的描述可以看到Channel通过AbstractUnsafe进行注册操作，由NioServerSocketChannel进行绑定端口操作。完成统一操作视图的功能（好像java nio是通过其它方式进行统一视图的，有时间再分析）。</p>
+
       
     </div>
     
@@ -467,10 +503,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/01/13/markdown-diagram/" rel="prev" title="markdown diagram">
-                markdown diagram <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -522,8 +554,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -538,7 +579,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -549,7 +590,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -560,7 +601,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -590,6 +631,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Netty核心组件"><span class="nav-number">1.</span> <span class="nav-text">Netty核心组件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaNio的Channel与Netty的Channel对比"><span class="nav-number">1.1.</span> <span class="nav-text">JavaNio的Channel与Netty的Channel对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty自己实现了Channel。"><span class="nav-number">1.2.</span> <span class="nav-text">Netty自己实现了Channel。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java-nio-channel"><span class="nav-number">1.3.</span> <span class="nav-text">java nio channel</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

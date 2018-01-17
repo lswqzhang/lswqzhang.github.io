@@ -1,22 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[markdown diagram]]></title>
-    <url>%2F2018%2F01%2F13%2Fmarkdown-diagram%2F</url>
-    <content type="text"><![CDATA[[TOC] sequence这篇文章没有什么可以解释，这只是这样用的。 sequence123Alice-&gt;Bob: Hello Bob, how are you?Note right of Bob: Bob thinksBob--&gt;Alice: I am good thanks! 1234participant Aliceparticipant Bobparticipant JohnAlice-&gt;John: Hello John, how are you? 12345Title: Here is a titleA-&gt;B: Normal lineB--&gt;C: Dashed lineC-&gt;&gt;D: Open arrowD--&gt;&gt;A: Dashed open arrow 1234Note left of A: Note to the\n left of ANote right of A: Note to the\n right of ANote over A: Note over ANote over A,B: Note over both A and B flow12345678910st=&gt;start: 开始io=&gt;inputoutput: 输入op=&gt;operation: 操作cond=&gt;condition: 判断sub=&gt;subroutine: 子程序e=&gt;end: 结束st-&gt;io-&gt;op-&gt;condcond(yes)-&gt;econd(no)-&gt;sub-&gt;io 1234567891011121314st=&gt;start: Start|past:&gt;http://www.google.com[blank]e=&gt;end: End|future:&gt;http://www.google.comop1=&gt;operation: My Operation|pastop2=&gt;operation: Stuff|currentsub1=&gt;subroutine: My Subroutine|invalidcond=&gt;condition: Yes or No?|approved:&gt;http://www.google.comc2=&gt;condition: Good idea|rejectedio=&gt;inputoutput: catch something...|futurest-&gt;op1(right)-&gt;condcond(yes, right)-&gt;c2cond(no)-&gt;sub1(left)-&gt;op1c2(yes)-&gt;io-&gt;ec2(no)-&gt;op2-&gt;e LaTeX行$$M=mc^2$$ 行内$M=mc^2$ mermaid:graph LR需要启用mermai才可以显示流程图 常用关键字 TB - top bottom BT - bottom top RL - right left LR - left right TD - same as TB 常用连线标识12345678910111213141516graph LRA--&gt;BAA---BBAAA--text---BBBA1-.-B1A2--text--&gt;B2A3-.text-.-B3A4-.text.-&gt;B4A5==text==&gt;B5A6==text===B6A7===B7C1[测试]C2(测试)C3&gt;测试]C4((测试))C5&#123;测试&#125; 流程选择1234graph TBA&#123;选择&#125;--&gt;|one| B1(选择B1)A&#123;选择&#125;--&gt;|two| B2(选择B2)A&#123;选择&#125;--&gt;|three| B3(选择B3) 子流程图123456789101112graph TBsubgraph onea1--&gt;a2endsubgraph twob1--&gt;b2endsubgraph threec1--&gt;c2endc1--&gt;a2 sequenceDiagram1234567891011%% Example of sequence diagram sequenceDiagram Alice-&gt;&gt;Bob: Hello Bob, how are you? alt is sick Bob-&gt;&gt;Alice: Not so good :( else is well Bob-&gt;&gt;Alice: Feeling fresh like a daisy end opt Extra response Bob-&gt;&gt;Alice: Thanks for asking end 12345678participant Aliceparticipant BobAlice-&gt;John:Hello John, how are you?John-&gt;John:Fight against hypochondriaNote right of John:Rational thoughts &lt;br/&gt;prevail...John--&gt;Alice:Great!John-&gt;Bob: How about you?Bob--&gt;John: Jolly good! gantt12345678910111213gantt dateFormat YYYY-MM-DD title 这是一个甘特图section 测试一 完成任务 :done, fitst, 2018-01-01,2018-01-03 开始任务 :active, second, 2018-01-02,3d 未来任务1 :crit, three, after second, 3d 未来任务2 :crit,active, four, after three, 3dsection 测试二 完成任务 :done, fitst, 2018-01-01,2018-01-02 开始任务 :active, second, 2018-01-02,3d 未来任务1 :crit, three, after second, 3d 未来任务2 :crit,active, four, after three, 7d 用例:Customer单个标识用例标识 包含用例 包含注释 多用例标识方式]]></content>
-      <categories>
-        <category>markdown</category>
-        <category>diagiam</category>
-      </categories>
-      <tags>
-        <tag>markdown</tag>
-        <tag>diagiam</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[Channel分析]]></title>
-    <url>%2F2018%2F01%2F12%2FChannel%E5%88%86%E6%9E%90%2F</url>
-    <content type="text"></content>
+    <url>%2F2018%2F01%2F12%2FBuffer%E5%AF%B9%E6%AF%94%2F</url>
+    <content type="text"><![CDATA[[TOC] Netty核心组件Netty核心组件包含Channel，每一个Channel包含一个ChannelPipeline，而Channel的读写是通过ByteBuf进行操作的，由此可以看到Channel是Netty最核心的组件。 同样在JavaNio中最重要的也是Channel，Channel注册到Selector，而Channel的读写是通过Buffer。 JavaNio的Channel与Netty的Channel对比Netty重新定义了Channel，和java nio提供的Channel几乎完全不一样，哪Netty为什么自己实现Channel呢？ java nio channel和netty channel完全不一样，netty对channel进行了重新实现，java nio channel并没有进行了完全的封装，而netty作为一个通信框架，对channel进行了完全的封装。为SocketChannel和ServerSocketChannel进行了统一的封装，提供了统一的操作视图，而java nio channel没有。 JDK的SocketChannel和ServerSocketChannel的主要职责就是网络I/O操作，它们是通过SPI类接口，由具体的虚拟机厂家提供的，所以其实现难度没有太大区别。 而Netty Channel需要和Netty整体框架融合在一起，所以需要对Channel进行重新封装。 自定义Channel更加灵活。 Netty自己实现了Channel。 Netty Channel类图 UnSafe中Channel的一个内部内，UnSafe进行读写操作的。 有两个重要的实现类： NioServerSokcetChannel和NioSocketChannel，这两个类可以类比java nio中的ServerSocketChannel和SocketChannel。 NioMessageUnsafe是AbstractNioMessageChannel内部类 NioByteUnsafe是AbstractNioByteChannel的内部类 AbstractNioUnsafe是AbstractNioChannel的内部类 AbstractUnsafe是AbstractChannel的内部类 AbstractUnsafe进行register到NioEventLoop上以及bind端口操作 AbstractChannel$AbstractUnsafe#register0()进行注册到EventLoop上 NioServerSocketChannel#doBind()进行编写端口操作 java nio channel ServerSocketChannel绑定端口 ServerSocketChannel注册到selector上 SocketChannel注册到selector 由上面的描述可以看到Channel通过AbstractUnsafe进行注册操作，由NioServerSocketChannel进行绑定端口操作。完成统一操作视图的功能（好像java nio是通过其它方式进行统一视图的，有时间再分析）。]]></content>
       <categories>
         <category>Java</category>
         <category>Netty</category>
