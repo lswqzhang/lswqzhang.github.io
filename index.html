@@ -325,7 +325,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lswqzhang.github.io/2018/01/12/Buffer对比/">
+    <link itemprop="mainEntityOfPage" href="https://lswqzhang.github.io/2018/01/12/Channel分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="张韶伟">
@@ -344,7 +344,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/12/Buffer对比/" itemprop="url">Channel分析</a></h1>
+                <a class="post-title-link" href="/2018/01/12/Channel分析/" itemprop="url">Channel分析</a></h1>
         
 
         <div class="post-meta">
@@ -459,8 +459,97 @@
 <li>ServerSocketChannel注册到selector上</li>
 <li>SocketChannel注册到selector</li>
 </ul>
-<p>由上面的描述可以看到Channel通过AbstractUnsafe进行注册操作，由NioServerSocketChannel进行绑定端口操作。完成统一操作视图的功能（好像java nio是通过其它方式进行统一视图的，有时间再分析）。</p>
-
+<h2 id="channel对比总结"><a href="#channel对比总结" class="headerlink" title="channel对比总结"></a>channel对比总结</h2><p>由上面的描述可以看到Channel通过AbstractUnsafe进行注册操作，由NioServerSocketChannel进行绑定端口操作。完成统一操作视图的功能（好像java nio是通过其它方式进行统一视图的，有时间再分析）。</p>
+<h1 id="Netty中的ByteBuf和java-nio的Buffer对比"><a href="#Netty中的ByteBuf和java-nio的Buffer对比" class="headerlink" title="Netty中的ByteBuf和java nio的Buffer对比"></a>Netty中的ByteBuf和java nio的Buffer对比</h1><h2 id="JavaNio-Buffer"><a href="#JavaNio-Buffer" class="headerlink" title="JavaNio Buffer"></a>JavaNio Buffer</h2><p>首先需要回顾一下Java提供的8种数据类型：这里以一个表格的形式展现出来</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>封装类型</th>
+<th>占用位数</th>
+<th>范围</th>
+<th>Buffer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>byte</td>
+<td>Byte</td>
+<td>8位</td>
+<td>-128~127</td>
+<td>ByteBuffer</td>
+</tr>
+<tr>
+<td>short</td>
+<td>Short</td>
+<td>16位</td>
+<td>-32768 ~ 32767</td>
+<td>ShortBuffer</td>
+</tr>
+<tr>
+<td>int</td>
+<td>Integer</td>
+<td>32位( 最常用)</td>
+<td>-2^31-1~2^31</td>
+<td>IntBuffer</td>
+</tr>
+<tr>
+<td>long</td>
+<td>Long</td>
+<td>64位( 次常用)</td>
+<td></td>
+<td>LongBuffer</td>
+</tr>
+<tr>
+<td>float</td>
+<td>Float</td>
+<td>32位( 8 位指数，23 位有效位数)</td>
+<td></td>
+<td>FloatBuffer</td>
+</tr>
+<tr>
+<td>double</td>
+<td>Double</td>
+<td>64位(1位符号位，11位指数，52位有效位)</td>
+<td></td>
+<td>DoubleBuffer</td>
+</tr>
+<tr>
+<td>char</td>
+<td>Char</td>
+<td>16位</td>
+<td></td>
+<td>CharBuffer</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>Boolean</td>
+<td></td>
+<td>true 真  和 false 假</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>int i=5; // 5 叫直接量（或字面量），即 直接写出的常数。</li>
+<li>float  的范围大于 long  指数可以很大</li>
+<li>浮点数是不精确的，不能对浮点数进行精确比较</li>
+<li>类型转换：char–&gt;    自动转换：byte–&gt;short–&gt;int–&gt;long–&gt;float–&gt;double</li>
+<li>由表中可以看出，boolean没有buffer(原因可能是因为boolean没有占用具体的位数，没有办法处理)</li>
+</ul>
+<p><a href="https://www.jianshu.com/p/2f663dc820d0" target="_blank" rel="noopener">你真的知道Java中boolean类型占用多少个字节吗</a>这里写了boolean占用字节数的分析，私认为还是比较准确的。</p>
+<p>这里把结论引用一下：</p>
+<blockquote>
+<p>1个字节、4个字节都是有可能。</p>
+</blockquote>
+<p>而在NIO编程中，常用的是ByteBuffer</p>
+<p>这里分析一下ByteBuffer的缺点：</p>
+<ol>
+<li>ByteBuffer不可能动态的扩展和收缩，只能分配固定的长度。</li>
+<li>ByteBuffer只有一个位置指针 position，读写里需要手工调用flip()和rewind()</li>
+<li>ByteBuffer的API功能有限</li>
+</ol>
+<h3 id="ByteBuffer读写操作"><a href="#ByteBuffer读写操作" class="headerlink" title="ByteBuffer读写操作"></a>ByteBuffer读写操作</h3><p>ByteBuffer包含几个关键的概念：mark、position、limit、capacity</p>
+<h2 id="Netty-Buffer"><a href="#Netty-Buffer" class="headerlink" title="Netty Buffer"></a>Netty Buffer</h2>
           
         
       
