@@ -81,19 +81,19 @@
 
 
 
-<meta name="description" content="[TOC] Netty核心组件Netty核心组件包含Channel，每一个Channel包含一个ChannelPipeline，而Channel的读写是通过ByteBuf进行操作的，由此可以看到Channel是Netty最核心的组件。 同样在JavaNio中最重要的也是Channel，Channel注册到Selector，而Channel的读写是通过Buffer。 JavaNio的Channel与">
+<meta name="description" content="[TOC] Netty核心组件Netty核心组件包含Channel，每一个Channel包含一个ChannelPipeline，而Channel的读写是通过ByteBuf进行操作的，由此可以看到Channel是Netty最核心的组件。 同样在JavaNio中最重要的也是Channel，Channel注册到Selector，而Channel的读写是通过Buffer。">
 <meta name="keywords" content="Java,Netty">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Channel分析">
 <meta property="og:url" content="https://lswqzhang.github.io/2018/01/12/Channel分析/index.html">
 <meta property="og:site_name" content="流水无情的博客">
-<meta property="og:description" content="[TOC] Netty核心组件Netty核心组件包含Channel，每一个Channel包含一个ChannelPipeline，而Channel的读写是通过ByteBuf进行操作的，由此可以看到Channel是Netty最核心的组件。 同样在JavaNio中最重要的也是Channel，Channel注册到Selector，而Channel的读写是通过Buffer。 JavaNio的Channel与">
+<meta property="og:description" content="[TOC] Netty核心组件Netty核心组件包含Channel，每一个Channel包含一个ChannelPipeline，而Channel的读写是通过ByteBuf进行操作的，由此可以看到Channel是Netty最核心的组件。 同样在JavaNio中最重要的也是Channel，Channel注册到Selector，而Channel的读写是通过Buffer。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fniwl90tq5j31kw0uaq90.jpg">
-<meta property="og:updated_time" content="2018-01-18T16:35:43.105Z">
+<meta property="og:updated_time" content="2018-01-18T16:56:58.685Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Channel分析">
-<meta name="twitter:description" content="[TOC] Netty核心组件Netty核心组件包含Channel，每一个Channel包含一个ChannelPipeline，而Channel的读写是通过ByteBuf进行操作的，由此可以看到Channel是Netty最核心的组件。 同样在JavaNio中最重要的也是Channel，Channel注册到Selector，而Channel的读写是通过Buffer。 JavaNio的Channel与">
+<meta name="twitter:description" content="[TOC] Netty核心组件Netty核心组件包含Channel，每一个Channel包含一个ChannelPipeline，而Channel的读写是通过ByteBuf进行操作的，由此可以看到Channel是Netty最核心的组件。 同样在JavaNio中最重要的也是Channel，Channel注册到Selector，而Channel的读写是通过Buffer。">
 <meta name="twitter:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fniwl90tq5j31kw0uaq90.jpg">
 
 
@@ -434,6 +434,7 @@
         <p>[TOC]</p>
 <h1 id="Netty核心组件"><a href="#Netty核心组件" class="headerlink" title="Netty核心组件"></a>Netty核心组件</h1><p>Netty核心组件包含Channel，每一个Channel包含一个ChannelPipeline，而Channel的读写是通过ByteBuf进行操作的，由此可以看到Channel是Netty最核心的组件。</p>
 <p>同样在JavaNio中最重要的也是Channel，Channel注册到Selector，而Channel的读写是通过Buffer。</p>
+<a id="more"></a>
 <h2 id="JavaNio的Channel与Netty的Channel对比"><a href="#JavaNio的Channel与Netty的Channel对比" class="headerlink" title="JavaNio的Channel与Netty的Channel对比"></a>JavaNio的Channel与Netty的Channel对比</h2><p>Netty重新定义了Channel，和java nio提供的Channel几乎完全不一样，哪Netty为什么自己实现Channel呢？</p>
 <ul>
 <li>java nio channel和netty channel完全不一样，netty对channel进行了重新实现，java nio channel并没有进行了完全的封装，而netty作为一个通信框架，对channel进行了完全的封装。为SocketChannel和ServerSocketChannel进行了统一的封装，提供了统一的操作视图，而java nio channel没有。</li>

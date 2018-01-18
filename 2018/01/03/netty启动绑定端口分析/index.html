@@ -81,21 +81,21 @@
 
 
 
-<meta name="description" content="[TOC] Netty胶水类​    在开始netty分析端口绑定的时候可能会比较迷惑，因为前半部分几乎都是在分析双向链表的组装，其实我在看源码的时候也是比较迷惑，即使感到迷惑也要看下去，毕竟学习就是一个解惑的过程，看完以后也就明白了这样做的原因了。 DefaultChannelPipeline的分析​    是的，这个方法中就一句话，即调用DefaultChannelPipeline#bind(">
+<meta name="description" content="[TOC] Netty胶水类​    在开始netty分析端口绑定的时候可能会比较迷惑，因为前半部分几乎都是在分析双向链表的组装，其实我在看源码的时候也是比较迷惑，即使感到迷惑也要看下去，毕竟学习就是一个解惑的过程，看完以后也就明白了这样做的原因了。">
 <meta name="keywords" content="Java,Netty">
 <meta property="og:type" content="article">
 <meta property="og:title" content="netty启动绑定端口分析">
 <meta property="og:url" content="https://lswqzhang.github.io/2018/01/03/netty启动绑定端口分析/index.html">
 <meta property="og:site_name" content="流水无情的博客">
-<meta property="og:description" content="[TOC] Netty胶水类​    在开始netty分析端口绑定的时候可能会比较迷惑，因为前半部分几乎都是在分析双向链表的组装，其实我在看源码的时候也是比较迷惑，即使感到迷惑也要看下去，毕竟学习就是一个解惑的过程，看完以后也就明白了这样做的原因了。 DefaultChannelPipeline的分析​    是的，这个方法中就一句话，即调用DefaultChannelPipeline#bind(">
+<meta property="og:description" content="[TOC] Netty胶水类​    在开始netty分析端口绑定的时候可能会比较迷惑，因为前半部分几乎都是在分析双向链表的组装，其实我在看源码的时候也是比较迷惑，即使感到迷惑也要看下去，毕竟学习就是一个解惑的过程，看完以后也就明白了这样做的原因了。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fn51gca6nej31fe14cgs2.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcly1fn50gtq2zoj31kw0p3n0z.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fn8h2ot2hfj31kw0rhtdh.jpg">
-<meta property="og:updated_time" content="2018-01-07T15:51:25.745Z">
+<meta property="og:updated_time" content="2018-01-18T16:57:08.673Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="netty启动绑定端口分析">
-<meta name="twitter:description" content="[TOC] Netty胶水类​    在开始netty分析端口绑定的时候可能会比较迷惑，因为前半部分几乎都是在分析双向链表的组装，其实我在看源码的时候也是比较迷惑，即使感到迷惑也要看下去，毕竟学习就是一个解惑的过程，看完以后也就明白了这样做的原因了。 DefaultChannelPipeline的分析​    是的，这个方法中就一句话，即调用DefaultChannelPipeline#bind(">
+<meta name="twitter:description" content="[TOC] Netty胶水类​    在开始netty分析端口绑定的时候可能会比较迷惑，因为前半部分几乎都是在分析双向链表的组装，其实我在看源码的时候也是比较迷惑，即使感到迷惑也要看下去，毕竟学习就是一个解惑的过程，看完以后也就明白了这样做的原因了。">
 <meta name="twitter:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fn51gca6nej31fe14cgs2.jpg">
 
 
@@ -435,6 +435,7 @@
       
         <p>[TOC]</p>
 <h1 id="Netty胶水类"><a href="#Netty胶水类" class="headerlink" title="Netty胶水类"></a>Netty胶水类</h1><p>​    在开始netty分析端口绑定的时候可能会比较迷惑，因为前半部分几乎都是在分析双向链表的组装，其实我在看源码的时候也是比较迷惑，即使感到迷惑也要看下去，毕竟学习就是一个解惑的过程，看完以后也就明白了这样做的原因了。</p>
+<a id="more"></a>
 <h2 id="DefaultChannelPipeline的分析"><a href="#DefaultChannelPipeline的分析" class="headerlink" title="DefaultChannelPipeline的分析"></a>DefaultChannelPipeline的分析</h2><p>​    是的，这个方法中就一句话，即调用DefaultChannelPipeline#bind(localAddress, promise)方法，现在使用到DefaultChannelPipeline类，就需要看一下这个类，在Netty当中，这是一个胶水类：</p>
 <p>在<a href="https://lswqzhang.github.io/2017/12/31/netty启动与java%20nio启动对对比/">netty启动与JavaNio启动比对</a>中有提到NioServerSocketChannel类的初始化，在初始化NioServerSocketChannel中会初始化AbstractChannel：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Creates a new instance.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> parent</span></span><br><span class="line"><span class="comment"> *        the parent of this channel. &#123;<span class="doctag">@code</span> null&#125; if there's no parent.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="title">AbstractChannel</span><span class="params">(Channel parent)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.parent = parent;</span><br><span class="line">    id = newId();</span><br><span class="line">    unsafe = newUnsafe();</span><br><span class="line">    pipeline = newChannelPipeline();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Returns a new &#123;<span class="doctag">@link</span> DefaultChannelPipeline&#125; instance.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> DefaultChannelPipeline <span class="title">newChannelPipeline</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> DefaultChannelPipeline(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
