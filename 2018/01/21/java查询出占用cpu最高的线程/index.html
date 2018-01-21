@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Java,JVM," />
 
 
 
@@ -81,14 +81,24 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="java">
-<meta property="og:url" content="https://lswqzhang.github.io/java/index.html">
+<meta name="description" content="[TOC] 准备工作 JPS 一个查询Java进程的命令   安装pidstat pidstat是一个功能强大的性能监测工具，也是Sysstat的组件之一，这个可以在网上下载与安装   jstack 用于打印出给定的java进程ID或core file或远程调试服务的Java堆栈信息   print  进行10进制和16进制之间互相转换的工具    &amp;lt;!– more – 查找工作 通过JPS">
+<meta name="keywords" content="Java,JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java查询出占用cpu最高的线程">
+<meta property="og:url" content="https://lswqzhang.github.io/2018/01/21/java查询出占用cpu最高的线程/index.html">
 <meta property="og:site_name" content="流水无情的博客">
+<meta property="og:description" content="[TOC] 准备工作 JPS 一个查询Java进程的命令   安装pidstat pidstat是一个功能强大的性能监测工具，也是Sysstat的组件之一，这个可以在网上下载与安装   jstack 用于打印出给定的java进程ID或core file或远程调试服务的Java堆栈信息   print  进行10进制和16进制之间互相转换的工具    &amp;lt;!– more – 查找工作 通过JPS">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-31T00:22:14.303Z">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcly1fno4i4zim0j30ee05474w.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcly1fno4kdvcgej31c00iutea.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcly1fno4q9909cj30k402qwez.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcly1fno4r2ytatj30ne01a3yq.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcly1fno4s41mqzj318u05sdhp.jpg">
+<meta property="og:updated_time" content="2018-01-21T05:14:46.016Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="java">
+<meta name="twitter:title" content="java查询出占用cpu最高的线程">
+<meta name="twitter:description" content="[TOC] 准备工作 JPS 一个查询Java进程的命令   安装pidstat pidstat是一个功能强大的性能监测工具，也是Sysstat的组件之一，这个可以在网上下载与安装   jstack 用于打印出给定的java进程ID或core file或远程调试服务的Java堆栈信息   print  进行10进制和16进制之间互相转换的工具    &amp;lt;!– more – 查找工作 通过JPS">
+<meta name="twitter:image" content="https://ws2.sinaimg.cn/large/006tKfTcly1fno4i4zim0j30ee05474w.jpg">
 
 
 
@@ -118,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="https://lswqzhang.github.io/java/"/>
+  <link rel="canonical" href="https://lswqzhang.github.io/2018/01/21/java查询出占用cpu最高的线程/"/>
 
 
 
 
 
-  <title>java | 流水无情的博客</title>
+  <title>java查询出占用cpu最高的线程 | 流水无情的博客</title>
   
 
 
@@ -313,33 +323,222 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lswqzhang.github.io/2018/01/21/java查询出占用cpu最高的线程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="张韶伟">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="流水无情的博客">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">java</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
+          <h1 class="post-title" itemprop="name headline">java查询出占用cpu最高的线程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-21T12:30:24+08:00">
+                2018-01-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-      </div>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/JVM/" itemprop="url" rel="index">
+                    <span itemprop="name">JVM</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <p>[TOC]</p>
+<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><ul>
+<li>JPS<ul>
+<li>一个查询Java进程的命令</li>
+</ul>
+</li>
+<li>安装pidstat<ul>
+<li>pidstat是一个功能强大的性能监测工具，也是Sysstat的组件之一，这个可以在网上下载与安装</li>
+</ul>
+</li>
+<li>jstack<ul>
+<li>用于打印出给定的java进程ID或core file或远程调试服务的Java堆栈信息</li>
+</ul>
+</li>
+<li>print <ul>
+<li>进行10进制和16进制之间互相转换的工具</li>
+</ul>
+</li>
+</ul>
+<p>&lt;!– more –</p>
+<h1 id="查找工作"><a href="#查找工作" class="headerlink" title="查找工作"></a>查找工作</h1><ol>
+<li><p>通过JPS查询出java的线程：jps</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1fno4i4zim0j30ee05474w.jpg" alt="HoldCPUMain"></p>
+</li>
+<li><p>通过pidstat查询出占用最高的线程： pidstat -p 43371 -u -t 1 3</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1fno4kdvcgej31c00iutea.jpg" alt="线程号"></p>
+<p>通过上面的图可以看到线程号为43381的线程CPU占用的线程最高</p>
+</li>
+<li><p>把10进制转换为16进制： printf “%x\n” 43381</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1fno4q9909cj30k402qwez.jpg" alt=""></p>
+<p>​    ==printf “”%d\n” 0xa975，16进制转换为10进制==</p>
+</li>
+<li><p>jsatck导出堆信息：jstack -l 43371 &gt; /tmp/t.txt</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1fno4r2ytatj30ne01a3yq.jpg" alt=""></p>
+</li>
+<li><p>通过vim查询出相应的堆信息：</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tKfTcly1fno4s41mqzj318u05sdhp.jpg" alt=""></p>
+</li>
+</ol>
+<p>以上即完成了查询出CPU占用最高的线程。</p>
+<h1 id="查询IO占用最高的线程"><a href="#查询IO占用最高的线程" class="headerlink" title="查询IO占用最高的线程"></a>查询IO占用最高的线程</h1><p>与查询占用cpu最高的区别仅仅有pidstat不一样：</p>
+<h2 id="查询占用IO最高的pidstat"><a href="#查询占用IO最高的pidstat" class="headerlink" title="查询占用IO最高的pidstat"></a>查询占用IO最高的pidstat</h2><p>pidstat -p 43824 -d -t 1 3</p>
+<h2 id="查询占用CPU最高的pidstat"><a href="#查询占用CPU最高的pidstat" class="headerlink" title="查询占用CPU最高的pidstat"></a>查询占用CPU最高的pidstat</h2><p>pidstat -p 43824 -u -t 1 3</p>
+<h2 id="查询占用内存最高的pidstat"><a href="#查询占用内存最高的pidstat" class="headerlink" title="查询占用内存最高的pidstat"></a>查询占用内存最高的pidstat</h2><p>pidstat -p 43824 -r -t 1 3</p>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/12/Channel分析/" rel="next" title="Channel分析">
+                <i class="fa fa-chevron-left"></i> Channel分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -372,8 +571,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -440,6 +648,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#准备工作"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查找工作"><span class="nav-number">2.</span> <span class="nav-text">查找工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查询IO占用最高的线程"><span class="nav-number">3.</span> <span class="nav-text">查询IO占用最高的线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查询占用IO最高的pidstat"><span class="nav-number">3.1.</span> <span class="nav-text">查询占用IO最高的pidstat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询占用CPU最高的pidstat"><span class="nav-number">3.2.</span> <span class="nav-text">查询占用CPU最高的pidstat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询占用内存最高的pidstat"><span class="nav-number">3.3.</span> <span class="nav-text">查询占用内存最高的pidstat</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

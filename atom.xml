@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lswqzhang.github.io/"/>
-  <updated>2018-01-18T16:56:58.685Z</updated>
+  <updated>2018-01-21T05:14:46.016Z</updated>
   <id>https://lswqzhang.github.io/</id>
   
   <author>
@@ -15,6 +15,41 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>java查询出占用cpu最高的线程</title>
+    <link href="https://lswqzhang.github.io/2018/01/21/java%E6%9F%A5%E8%AF%A2%E5%87%BA%E5%8D%A0%E7%94%A8cpu%E6%9C%80%E9%AB%98%E7%9A%84%E7%BA%BF%E7%A8%8B/"/>
+    <id>https://lswqzhang.github.io/2018/01/21/java查询出占用cpu最高的线程/</id>
+    <published>2018-01-21T04:30:24.000Z</published>
+    <updated>2018-01-21T05:14:46.016Z</updated>
+    
+    <content type="html"><![CDATA[<p>[TOC]</p><h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><ul><li>JPS<ul><li>一个查询Java进程的命令</li></ul></li><li>安装pidstat<ul><li>pidstat是一个功能强大的性能监测工具，也是Sysstat的组件之一，这个可以在网上下载与安装</li></ul></li><li>jstack<ul><li>用于打印出给定的java进程ID或core file或远程调试服务的Java堆栈信息</li></ul></li><li>print <ul><li>进行10进制和16进制之间互相转换的工具</li></ul></li></ul><p>&lt;!– more –</p><h1 id="查找工作"><a href="#查找工作" class="headerlink" title="查找工作"></a>查找工作</h1><ol><li><p>通过JPS查询出java的线程：jps</p><p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1fno4i4zim0j30ee05474w.jpg" alt="HoldCPUMain"></p></li><li><p>通过pidstat查询出占用最高的线程： pidstat -p 43371 -u -t 1 3</p><p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1fno4kdvcgej31c00iutea.jpg" alt="线程号"></p><p>通过上面的图可以看到线程号为43381的线程CPU占用的线程最高</p></li><li><p>把10进制转换为16进制： printf “%x\n” 43381</p><p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1fno4q9909cj30k402qwez.jpg" alt=""></p><p>​    ==printf “”%d\n” 0xa975，16进制转换为10进制==</p></li><li><p>jsatck导出堆信息：jstack -l 43371 &gt; /tmp/t.txt</p><p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1fno4r2ytatj30ne01a3yq.jpg" alt=""></p></li><li><p>通过vim查询出相应的堆信息：</p><p><img src="https://ws1.sinaimg.cn/large/006tKfTcly1fno4s41mqzj318u05sdhp.jpg" alt=""></p></li></ol><p>以上即完成了查询出CPU占用最高的线程。</p><h1 id="查询IO占用最高的线程"><a href="#查询IO占用最高的线程" class="headerlink" title="查询IO占用最高的线程"></a>查询IO占用最高的线程</h1><p>与查询占用cpu最高的区别仅仅有pidstat不一样：</p><h2 id="查询占用IO最高的pidstat"><a href="#查询占用IO最高的pidstat" class="headerlink" title="查询占用IO最高的pidstat"></a>查询占用IO最高的pidstat</h2><p>pidstat -p 43824 -d -t 1 3</p><h2 id="查询占用CPU最高的pidstat"><a href="#查询占用CPU最高的pidstat" class="headerlink" title="查询占用CPU最高的pidstat"></a>查询占用CPU最高的pidstat</h2><p>pidstat -p 43824 -u -t 1 3</p><h2 id="查询占用内存最高的pidstat"><a href="#查询占用内存最高的pidstat" class="headerlink" title="查询占用内存最高的pidstat"></a>查询占用内存最高的pidstat</h2><p>pidstat -p 43824 -r -t 1 3</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h1 id=&quot;准备工作&quot;&gt;&lt;a href=&quot;#准备工作&quot; class=&quot;headerlink&quot; title=&quot;准备工作&quot;&gt;&lt;/a&gt;准备工作&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;JPS&lt;ul&gt;
+&lt;li&gt;一个查询Java进程的命令&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+
+      
+    
+    </summary>
+    
+      <category term="Java" scheme="https://lswqzhang.github.io/categories/Java/"/>
+    
+      <category term="JVM" scheme="https://lswqzhang.github.io/categories/Java/JVM/"/>
+    
+    
+      <category term="Java" scheme="https://lswqzhang.github.io/tags/Java/"/>
+    
+      <category term="JVM" scheme="https://lswqzhang.github.io/tags/JVM/"/>
+    
+  </entry>
   
   <entry>
     <title>Channel分析</title>
