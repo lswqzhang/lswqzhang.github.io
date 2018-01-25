@@ -89,10 +89,16 @@
 <meta property="og:site_name" content="流水无情的博客">
 <meta property="og:description" content="[TOC] 准备工作 JPS 一个查询Java进程的命令   安装pidstat pidstat是一个功能强大的性能监测工具，也是Sysstat的组件之一，这个可以在网上下载与安装   jstack 用于打印出给定的java进程ID或core file或远程调试服务的Java堆栈信息   print  进行10进制和16进制之间互相转换的工具">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-25T17:53:21.113Z">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcly1fno4i4zim0j30ee05474w.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcly1fno4kdvcgej31c00iutea.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcly1fno4q9909cj30k402qwez.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcly1fno4r2ytatj30ne01a3yq.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcly1fno4s41mqzj318u05sdhp.jpg">
+<meta property="og:updated_time" content="2018-01-25T17:55:04.700Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java查询出占用cpu最高的线程">
 <meta name="twitter:description" content="[TOC] 准备工作 JPS 一个查询Java进程的命令   安装pidstat pidstat是一个功能强大的性能监测工具，也是Sysstat的组件之一，这个可以在网上下载与安装   jstack 用于打印出给定的java进程ID或core file或远程调试服务的Java堆栈信息   print  进行10进制和16进制之间互相转换的工具">
+<meta name="twitter:image" content="https://ws2.sinaimg.cn/large/006tKfTcly1fno4i4zim0j30ee05474w.jpg">
 
 
 
@@ -448,54 +454,33 @@
 </ul>
 </li>
 </ul>
-<!-- more --
-
-# 查找工作
-
-1. 通过JPS查询出java的线程：jps
-
-   ![HoldCPUMain](https://ws2.sinaimg.cn/large/006tKfTcly1fno4i4zim0j30ee05474w.jpg)
-
-2. 通过pidstat查询出占用最高的线程： pidstat -p 43371 -u -t 1 3
-
-   ![线程号](https://ws4.sinaimg.cn/large/006tKfTcly1fno4kdvcgej31c00iutea.jpg)
-
-   通过上面的图可以看到线程号为43381的线程CPU占用的线程最高
-
-3. 把10进制转换为16进制： printf "%x\n" 43381
-
-   ![](https://ws2.sinaimg.cn/large/006tKfTcly1fno4q9909cj30k402qwez.jpg)
-
-   ​    ==printf ""%d\n" 0xa975，16进制转换为10进制==
-
-4. jsatck导出堆信息：jstack -l 43371 > /tmp/t.txt
-
-   ![](https://ws3.sinaimg.cn/large/006tKfTcly1fno4r2ytatj30ne01a3yq.jpg)
-
-5. 通过vim查询出相应的堆信息：
-
-   ![](https://ws1.sinaimg.cn/large/006tKfTcly1fno4s41mqzj318u05sdhp.jpg)
-
-以上即完成了查询出CPU占用最高的线程。
-
-# 查询IO占用最高的线程
-
-与查询占用cpu最高的区别仅仅有pidstat不一样：
-
-## 查询占用IO最高的pidstat
-
-pidstat -p 43824 -d -t 1 3
-
-## 查询占用CPU最高的pidstat
-
-pidstat -p 43824 -u -t 1 3
-
-## 查询占用内存最高的pidstat
-
-pidstat -p 43824 -r -t 1 3
-
+<a id="more"></a>
+<h1 id="查找工作"><a href="#查找工作" class="headerlink" title="查找工作"></a>查找工作</h1><ol>
+<li><p>通过JPS查询出java的线程：jps</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1fno4i4zim0j30ee05474w.jpg" alt="HoldCPUMain"></p>
+</li>
+<li><p>通过pidstat查询出占用最高的线程： pidstat -p 43371 -u -t 1 3</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1fno4kdvcgej31c00iutea.jpg" alt="线程号"></p>
+<p>通过上面的图可以看到线程号为43381的线程CPU占用的线程最高</p>
+</li>
+<li><p>把10进制转换为16进制： printf “%x\n” 43381</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1fno4q9909cj30k402qwez.jpg" alt=""></p>
+<p>​    ==printf “”%d\n” 0xa975，16进制转换为10进制==</p>
+</li>
+<li><p>jsatck导出堆信息：jstack -l 43371 &gt; /tmp/t.txt</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1fno4r2ytatj30ne01a3yq.jpg" alt=""></p>
+</li>
+<li><p>通过vim查询出相应的堆信息：</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tKfTcly1fno4s41mqzj318u05sdhp.jpg" alt=""></p>
+</li>
+</ol>
+<p>以上即完成了查询出CPU占用最高的线程。</p>
+<h1 id="查询IO占用最高的线程"><a href="#查询IO占用最高的线程" class="headerlink" title="查询IO占用最高的线程"></a>查询IO占用最高的线程</h1><p>与查询占用cpu最高的区别仅仅有pidstat不一样：</p>
+<h2 id="查询占用IO最高的pidstat"><a href="#查询占用IO最高的pidstat" class="headerlink" title="查询占用IO最高的pidstat"></a>查询占用IO最高的pidstat</h2><p>pidstat -p 43824 -d -t 1 3</p>
+<h2 id="查询占用CPU最高的pidstat"><a href="#查询占用CPU最高的pidstat" class="headerlink" title="查询占用CPU最高的pidstat"></a>查询占用CPU最高的pidstat</h2><p>pidstat -p 43824 -u -t 1 3</p>
+<h2 id="查询占用内存最高的pidstat"><a href="#查询占用内存最高的pidstat" class="headerlink" title="查询占用内存最高的pidstat"></a>查询占用内存最高的pidstat</h2><p>pidstat -p 43824 -r -t 1 3</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> bin/bash</span><br><span class="line"><span class="meta">#</span> 环境变量设置sh</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 第一个变量为进程名，第二个变量为打印最先几个线程号</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> grep</span><br><span class="line"><span class="meta">#</span>		-i:忽略大小写</span><br><span class="line"><span class="meta">#</span>		-v:过虑掉匹配的字符串</span><br><span class="line"><span class="meta">#</span>		-o:只输出匹配的字符串</span><br><span class="line">pid=`jps | grep -i $1 | awk '&#123;print $1&#125;'`</span><br><span class="line"><span class="meta">#</span> bc: obase输出数值的进制，ibase输入数值的进制</span><br><span class="line"><span class="meta">#</span> tr: 	1.大小写转换</span><br><span class="line"><span class="meta">#</span>		2.去除控制字符</span><br><span class="line"><span class="meta">#</span>		3.删除字符</span><br><span class="line"></span><br><span class="line">echo "the process number id $pid"</span><br><span class="line"></span><br><span class="line">max=`pidstat -p $pid -u -t 1 3 | sed  's/[ ]\&#123;1,\&#125;/ /g' | grep "Average: - " | awk '&#123;printf $4 "\t" $0 "\n"&#125;' | sort -r | head -$2 | sed 's/Average: - / /g' | awk '&#123;print $2&#125;'`</span><br><span class="line"></span><br><span class="line">echo $max</span><br><span class="line"><span class="meta">#</span> 把查询出的max转换为数组</span><br><span class="line">OLD_IFS="$IFS"</span><br><span class="line">IFS=" "</span><br><span class="line">arr=($max)</span><br><span class="line">IFS="$OLD_IFS"</span><br><span class="line"><span class="meta">#</span> 查询出前几个占用cpu最大的线程</span><br><span class="line">for i in $&#123;arr[@]&#125;</span><br><span class="line">do</span><br><span class="line">	echo -e "\n\n\n"</span><br><span class="line">	echo "start!!!"</span><br><span class="line">	echo -e "\n\n\n"</span><br><span class="line"></span><br><span class="line">	threadId=$(echo "obase=16;ibase=10;$i"|bc|tr "[A-Z]" "[a-z]")</span><br><span class="line">	echo "threadId = $threadId"</span><br><span class="line">	result=`jstack -l $pid | grep -A6 $threadId`</span><br><span class="line">	echo "$result"</span><br><span class="line"></span><br><span class="line">	echo "end!!!"</span><br><span class="line">	echo -e "\n\n\n"</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line">exit 0</span><br></pre></td></tr></table></figure>
--->
+
       
     </div>
     
@@ -674,7 +659,7 @@ pidstat -p 43824 -r -t 1 3
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#准备工作"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#准备工作"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查找工作"><span class="nav-number">2.</span> <span class="nav-text">查找工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查询IO占用最高的线程"><span class="nav-number">3.</span> <span class="nav-text">查询IO占用最高的线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查询占用IO最高的pidstat"><span class="nav-number">3.1.</span> <span class="nav-text">查询占用IO最高的pidstat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询占用CPU最高的pidstat"><span class="nav-number">3.2.</span> <span class="nav-text">查询占用CPU最高的pidstat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询占用内存最高的pidstat"><span class="nav-number">3.3.</span> <span class="nav-text">查询占用内存最高的pidstat</span></a></li></ol></li></ol></div>
             
 
           </div>
