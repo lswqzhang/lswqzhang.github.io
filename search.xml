@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[java查询出占用cpu最高的线程]]></title>
     <url>%2F2018%2F01%2F21%2Fjava%E6%9F%A5%E8%AF%A2%E5%87%BA%E5%8D%A0%E7%94%A8cpu%E6%9C%80%E9%AB%98%E7%9A%84%E7%BA%BF%E7%A8%8B%2F</url>
-    <content type="text"><![CDATA[[TOC] 准备工作 JPS 一个查询Java进程的命令 安装pidstat pidstat是一个功能强大的性能监测工具，也是Sysstat的组件之一，这个可以在网上下载与安装 jstack 用于打印出给定的java进程ID或core file或远程调试服务的Java堆栈信息 print 进行10进制和16进制之间互相转换的工具 &lt;!– more – 查找工作 通过JPS查询出java的线程：jps 通过pidstat查询出占用最高的线程： pidstat -p 43371 -u -t 1 3 通过上面的图可以看到线程号为43381的线程CPU占用的线程最高 把10进制转换为16进制： printf “%x\n” 43381 ​ ==printf “”%d\n” 0xa975，16进制转换为10进制== jsatck导出堆信息：jstack -l 43371 &gt; /tmp/t.txt 通过vim查询出相应的堆信息： 以上即完成了查询出CPU占用最高的线程。 查询IO占用最高的线程与查询占用cpu最高的区别仅仅有pidstat不一样： 查询占用IO最高的pidstatpidstat -p 43824 -d -t 1 3 查询占用CPU最高的pidstatpidstat -p 43824 -u -t 1 3 查询占用内存最高的pidstatpidstat -p 43824 -r -t 1 3]]></content>
+    <content type="text"><![CDATA[[TOC] 准备工作 JPS 一个查询Java进程的命令 安装pidstat pidstat是一个功能强大的性能监测工具，也是Sysstat的组件之一，这个可以在网上下载与安装 jstack 用于打印出给定的java进程ID或core file或远程调试服务的Java堆栈信息 print 进行10进制和16进制之间互相转换的工具]]></content>
       <categories>
         <category>Java</category>
         <category>JVM</category>
