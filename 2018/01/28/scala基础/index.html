@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="[TOC] 函数与方法定义一下方法 123456/*** 将输入的字符串转化为大写字符串，并返回一个包含这些字符串的Seq对象*/def upper(strings: String*): Seq[String] = &amp;#123;  strings.map((s:String)=&amp;gt;s.toUpperCase())&amp;#125; 使用等号也强调了函数式编程的一个准则：==值和函== 数是一个高度对">
+<meta name="description" content="[TOC] 函数与方法定义一下方法">
 <meta name="keywords" content="Scala">
 <meta property="og:type" content="article">
 <meta property="og:title" content="scala基础">
 <meta property="og:url" content="https://lswqzhang.github.io/2018/01/28/scala基础/index.html">
 <meta property="og:site_name" content="流水无情的博客">
-<meta property="og:description" content="[TOC] 函数与方法定义一下方法 123456/*** 将输入的字符串转化为大写字符串，并返回一个包含这些字符串的Seq对象*/def upper(strings: String*): Seq[String] = &amp;#123;  strings.map((s:String)=&amp;gt;s.toUpperCase())&amp;#125; 使用等号也强调了函数式编程的一个准则：==值和函== 数是一个高度对">
+<meta property="og:description" content="[TOC] 函数与方法定义一下方法">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-29T16:43:24.780Z">
+<meta property="og:updated_time" content="2018-01-29T16:46:47.170Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="scala基础">
-<meta name="twitter:description" content="[TOC] 函数与方法定义一下方法 123456/*** 将输入的字符串转化为大写字符串，并返回一个包含这些字符串的Seq对象*/def upper(strings: String*): Seq[String] = &amp;#123;  strings.map((s:String)=&amp;gt;s.toUpperCase())&amp;#125; 使用等号也强调了函数式编程的一个准则：==值和函== 数是一个高度对">
+<meta name="twitter:description" content="[TOC] 函数与方法定义一下方法">
 
 
 
@@ -420,8 +420,9 @@
       
         <p>[TOC]</p>
 <h1 id="函数与方法"><a href="#函数与方法" class="headerlink" title="函数与方法"></a>函数与方法</h1><p>定义一下方法</p>
+<a id="more"></a>
 <figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 将输入的字符串转化为大写字符串，并返回一个包含这些字符串的Seq对象</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">upper</span></span>(strings: <span class="type">String</span>*): <span class="type">Seq</span>[<span class="type">String</span>] = &#123;</span><br><span class="line">  strings.map((s:<span class="type">String</span>)=&gt;s.toUpperCase())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用等号也强调了函数式编程的一个准则：==值和函== 数是一个高度对齐的概念，函数可以作为值处理，函数可以作为参数传递给其它函数，也能够返回函数，还能被赋给某人变量</p>
+<p>使用等号也强调了函数式编程的一个准则：==值和函== 数是一个高度对齐的概念，函数可以作为值处理，函数可以作为参数传递给其它函数，也能够返回函数，还能被赋给某个变量。</p>
 <p>引用《scala程序设计》一书中对方法和函数的讲解</p>
 <blockquote>
 <p>对于大多数的面向对象编程语言而言，方法指的是类或对象中定义的函数。当调用方法时，方法中的this引用会隐性地指向某一个对象。当然，在大多数的OOP语言中，方法调用的语法通常是this.method_name (other_args)。scala中的 “方法”也满足这一常用规范。我们提到的“函数”尽管不是方法，但在某些时间通常会将方法也归入函数。当前上下文能够认清它们的区别。</p>
