@@ -90,7 +90,11 @@
 <meta property="og:description" content="[TOC] Netty核心组件Netty核心组件包含Channel，每一个Channel包含一个ChannelPipeline，而Channel的读写是通过ByteBuf进行操作的，由此可以看到Channel是Netty最核心的组件。 同样在JavaNio中最重要的也是Channel，Channel注册到Selector，而Channel的读写是通过Buffer。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fniwl90tq5j31kw0uaq90.jpg">
-<meta property="og:updated_time" content="2018-01-18T16:56:58.685Z">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcly1fo1efq5y02j315k0s0mzd.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcly1fo1egp4d1yj311a0oqmz2.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tKfTcly1fo1ehus439j313s0o8tag.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tKfTcly1fo1eiwtrggj31140s4whf.jpg">
+<meta property="og:updated_time" content="2018-02-01T16:51:33.292Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Channel分析">
 <meta name="twitter:description" content="[TOC] Netty核心组件Netty核心组件包含Channel，每一个Channel包含一个ChannelPipeline，而Channel的读写是通过ByteBuf进行操作的，由此可以看到Channel是Netty最核心的组件。 同样在JavaNio中最重要的也是Channel，Channel注册到Selector，而Channel的读写是通过Buffer。">
@@ -463,7 +467,7 @@
 <li>SocketChannel注册到selector</li>
 </ul>
 <h2 id="channel对比总结"><a href="#channel对比总结" class="headerlink" title="channel对比总结"></a>channel对比总结</h2><p>由上面的描述可以看到Channel通过AbstractUnsafe进行注册操作，由NioServerSocketChannel进行绑定端口操作。完成统一操作视图的功能（好像java nio是通过其它方式进行统一视图的，有时间再分析）。</p>
-<h1 id="Netty中的ByteBuf和java-nio的Buffer对比"><a href="#Netty中的ByteBuf和java-nio的Buffer对比" class="headerlink" title="Netty中的ByteBuf和java nio的Buffer对比"></a>Netty中的ByteBuf和java nio的Buffer对比</h1><h2 id="JavaNio-Buffer"><a href="#JavaNio-Buffer" class="headerlink" title="JavaNio Buffer"></a>JavaNio Buffer</h2><p>首先需要回顾一下Java提供的8种数据类型：这里以一个表格的形式展现出来</p>
+<h1 id="Netty中和java-nio的对比"><a href="#Netty中和java-nio的对比" class="headerlink" title="Netty中和java nio的对比"></a>Netty中和java nio的对比</h1><h2 id="JavaNio-Buffer"><a href="#JavaNio-Buffer" class="headerlink" title="JavaNio Buffer"></a>JavaNio Buffer</h2><p>首先需要回顾一下Java提供的8种数据类型：这里以一个表格的形式展现出来</p>
 <table>
 <thead>
 <tr>
@@ -545,14 +549,50 @@
 <blockquote>
 <p>1个字节、4个字节都是有可能。</p>
 </blockquote>
-<p>而在NIO编程中，常用的是ByteBuffer</p>
+<h2 id="ByteBuffer"><a href="#ByteBuffer" class="headerlink" title="ByteBuffer"></a>ByteBuffer</h2><p>而在NIO编程中，常用的是ByteBuffer</p>
 <p>这里分析一下ByteBuffer的缺点：</p>
 <ol>
-<li>ByteBuffer不可能动态的扩展和收缩，只能分配固定的长度。</li>
+<li>ByteBuffer不可能动态的扩展和收缩，只能分配固定的 ==长度==。</li>
 <li>ByteBuffer只有一个位置指针 position，读写里需要手工调用flip()和rewind()</li>
 <li>ByteBuffer的API功能有限</li>
 </ol>
 <h3 id="ByteBuffer读写操作"><a href="#ByteBuffer读写操作" class="headerlink" title="ByteBuffer读写操作"></a>ByteBuffer读写操作</h3><p>ByteBuffer包含几个关键的概念：mark、position、limit、capacity</p>
+<ul>
+<li>mark</li>
+<li>position</li>
+<li>limit</li>
+<li>capacity</li>
+</ul>
+<p>ByteBuffer是一个管道，可以向管道中写入数据。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ByteBuffer buf = ByteBuffer.allocate(<span class="number">4096</span>);</span><br></pre></td></tr></table></figure>
+<p>初始化一个容量为4096的ByteBuffer。(1)为各个参数的值。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcly1fo1efq5y02j315k0s0mzd.jpg" alt="初始化ByteBuffer"><br>$$<br>mark = 0;<br>position = 0;<br>limit = 4096;<br>capacity = 4096;<br>$$<br>写入数据到Buffer当中</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1fo1egp4d1yj311a0oqmz2.jpg" alt=""><br>$$<br>mark = 0;<br>position = 5;<br>limit = 4096;<br>capacity = 4096;<br>$$</p>
+<p>通过flip转换读到写的操作</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tKfTcly1fo1ehus439j313s0o8tag.jpg" alt=""><br>$$<br>mark = 0;<br>position = 5;<br>limit = 5;<br>capacity = 4096;<br>$$</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (buf.hasRemaining()) &#123;</span><br><span class="line">  	<span class="comment">// 每次读取一个字节</span></span><br><span class="line">	System.err.println(String.valueOf((<span class="keyword">char</span>) buf.get()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws1.sinaimg.cn/large/006tKfTcly1fo1eiwtrggj31140s4whf.jpg" alt=""></p>
+<p>查看一下hasRemaining方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">    * Tells whether there are any elements between the current position and</span></span><br><span class="line"><span class="comment">    * the limit.</span></span><br><span class="line"><span class="comment">    *</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span>  &lt;tt&gt;true&lt;/tt&gt; if, and only if, there is at least one element</span></span><br><span class="line"><span class="comment">    *          remaining in this buffer</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">hasRemaining</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> position &lt; limit;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>可以看出，当$position = limit$时，没有数据再进行读取。</p>
+<p>而get()方法则比较复杂，暂时不做解析。</p>
+<h3 id="ByteBuffer和Channel的关系"><a href="#ByteBuffer和Channel的关系" class="headerlink" title="ByteBuffer和Channel的关系"></a>ByteBuffer和Channel的关系</h3><p>先看一下例子，通过channel进行文件copy</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 文件copy操作</span></span><br><span class="line"><span class="comment">  * </span></span><br><span class="line"><span class="comment">  * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">copy</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    RandomAccessFile source = <span class="keyword">new</span> RandomAccessFile(<span class="string">"学习.md"</span>, <span class="string">"rw"</span>);</span><br><span class="line">    <span class="comment">// 生成一个from channel</span></span><br><span class="line">    FileChannel inChannel = source.getChannel();</span><br><span class="line">    RandomAccessFile target = <span class="keyword">new</span> RandomAccessFile(<span class="string">"学习_copy.md"</span>, <span class="string">"rw"</span>);</span><br><span class="line">    <span class="comment">// 生成一个to channel</span></span><br><span class="line">    FileChannel targetChannel = target.getChannel();</span><br><span class="line">    <span class="comment">// 设置一个ByteBuffer，通过ByteBuffer连接两个Channel</span></span><br><span class="line">    ByteBuffer buffer = ByteBuffer.allocate(<span class="number">4096</span>);</span><br><span class="line">    <span class="keyword">int</span> read;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        <span class="comment">// 从from channel读取数据到ByteBuffer当中</span></span><br><span class="line">        read = inChannel.read(buffer);</span><br><span class="line">        <span class="comment">// 通过flip()转换读写操作</span></span><br><span class="line">        buffer.flip();</span><br><span class="line">        <span class="keyword">while</span> (buffer.hasRemaining()) &#123;</span><br><span class="line">            <span class="comment">// ByteBuffer当中的数据写入到to channel中</span></span><br><span class="line">            targetChannel.write(buffer);</span><br><span class="line">        &#125;</span><br><span class="line">        buffer.clear();</span><br><span class="line">    &#125; <span class="keyword">while</span> (read != -<span class="number">1</span>);</span><br><span class="line">	<span class="comment">// 关闭资源</span></span><br><span class="line">    source.close();</span><br><span class="line">    target.close();</span><br><span class="line">    inChannel.close();</span><br><span class="line">    targetChannel.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>正如代码中的注释一样：</p>
+<ul>
+<li>生成一个from channel</li>
+<li>生成一个to channel</li>
+<li>设置一个ByteBuffer，通过ByteBuffer连接两个Channel</li>
+<li>从from channel读取数据到ByteBuffer当中</li>
+<li>通过flip()转换读写操作</li>
+<li>ByteBuffer当中的数据写入到to channel中</li>
+</ul>
+<p>看一下Channel的统一视图：</p>
+<ul>
+<li>读写操作都是由Channel发起</li>
+<li>读是由Channel中读取数据到ByteBuffer中</li>
+<li>写是由Channel中写入数据到ByteBuffer中</li>
+</ul>
 <h2 id="Netty-Buffer"><a href="#Netty-Buffer" class="headerlink" title="Netty Buffer"></a>Netty Buffer</h2>
       
     </div>
@@ -736,7 +776,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Netty核心组件"><span class="nav-number">1.</span> <span class="nav-text">Netty核心组件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaNio的Channel与Netty的Channel对比"><span class="nav-number">1.1.</span> <span class="nav-text">JavaNio的Channel与Netty的Channel对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty自己实现了Channel。"><span class="nav-number">1.2.</span> <span class="nav-text">Netty自己实现了Channel。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java-nio-channel"><span class="nav-number">1.3.</span> <span class="nav-text">java nio channel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#channel对比总结"><span class="nav-number">1.4.</span> <span class="nav-text">channel对比总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Netty中的ByteBuf和java-nio的Buffer对比"><span class="nav-number">2.</span> <span class="nav-text">Netty中的ByteBuf和java nio的Buffer对比</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaNio-Buffer"><span class="nav-number">2.1.</span> <span class="nav-text">JavaNio Buffer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ByteBuffer读写操作"><span class="nav-number">2.1.1.</span> <span class="nav-text">ByteBuffer读写操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty-Buffer"><span class="nav-number">2.2.</span> <span class="nav-text">Netty Buffer</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Netty核心组件"><span class="nav-number">1.</span> <span class="nav-text">Netty核心组件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaNio的Channel与Netty的Channel对比"><span class="nav-number">1.1.</span> <span class="nav-text">JavaNio的Channel与Netty的Channel对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty自己实现了Channel。"><span class="nav-number">1.2.</span> <span class="nav-text">Netty自己实现了Channel。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java-nio-channel"><span class="nav-number">1.3.</span> <span class="nav-text">java nio channel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#channel对比总结"><span class="nav-number">1.4.</span> <span class="nav-text">channel对比总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Netty中和java-nio的对比"><span class="nav-number">2.</span> <span class="nav-text">Netty中和java nio的对比</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaNio-Buffer"><span class="nav-number">2.1.</span> <span class="nav-text">JavaNio Buffer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ByteBuffer"><span class="nav-number">2.2.</span> <span class="nav-text">ByteBuffer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ByteBuffer读写操作"><span class="nav-number">2.2.1.</span> <span class="nav-text">ByteBuffer读写操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ByteBuffer和Channel的关系"><span class="nav-number">2.2.2.</span> <span class="nav-text">ByteBuffer和Channel的关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty-Buffer"><span class="nav-number">2.3.</span> <span class="nav-text">Netty Buffer</span></a></li></ol></li></ol></div>
             
 
           </div>
