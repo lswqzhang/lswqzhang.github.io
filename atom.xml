@@ -79,16 +79,13 @@
     <link href="https://lswqzhang.github.io/2018/02/11/nc%E5%88%9D%E6%8E%A2/"/>
     <id>https://lswqzhang.github.io/2018/02/11/nc初探/</id>
     <published>2018-02-10T16:24:07.000Z</published>
-    <updated>2018-02-10T16:29:17.172Z</updated>
+    <updated>2018-04-15T15:12:42.043Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="初识NC"><a href="#初识NC" class="headerlink" title="初识NC"></a>初识NC</h1><p>在升级macOS后，使用telnet命令时发现command not found，于是到google上去查，发现一个更好的命令，就是netcat，netcat被称为网络工具中的瑞士军刀，所以觉得有必要学习一下：</p>]]></content>
+    <content type="html"><![CDATA[<h1 id="初识NC"><a href="#初识NC" class="headerlink" title="初识NC"></a>初识NC</h1><p>在升级macOS后，使用telnet命令时发现command not found，于是到google上去查，发现一个更好的命令，就是netcat，netcat被称为网络工具中的瑞士军刀，所以觉得有必要学习一下：</p><a id="more"></a><p>nc常用的参数：</p><p><strong>1) -l</strong><br>        用于指定nc将处于侦听模式。指定该参数，则意味着nc被当作server，侦听并接受连接，而非向其它地址发起连接。<br> <strong>2) -p <port></port></strong><br>        指定nc要使用的端口。若之前已指定-l，则这里的-p指定具体的侦听端口；若未指定-l，则表示向这个端口发起连接。<br>        备注：nc要连接的目的端口可以是具体的整数，也可以直接通过服务名指定，这种情况下，nc会负责将name映射至某个well-known port（可用cat /etc/services查看这些端口跟服务名的映射关系）<br><strong>3) -s <hostname ip-address=""></hostname></strong><br>        指定发送数据的源IP地址，适用于多网卡机器<br><strong>4) -u</strong><br>        指定nc使用UDP协议，默认为TCP<br> <strong>5) -v</strong><br>        输出交互或出错信息，新手调试时尤为有用</p><h2 id="nc扫描端口"><a href="#nc扫描端口" class="headerlink" title="nc扫描端口"></a>nc扫描端口</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -v -w 2 192.168.15.142 -z 3306-3307</span><br></pre></td></tr></table></figure><p><img src="https://ws2.sinaimg.cn/large/006tNc79ly1fqdq8feb1fj30su0a6n0p.jpg" alt=""></p><h2 id="nc拷贝文件"><a href="#nc拷贝文件" class="headerlink" title="nc拷贝文件"></a>nc拷贝文件</h2><p>from：192.168.15.142</p><p>to：192.168.1.101</p><p>服务器端：nc -l -v -p 8210 &gt; lswqzhang.json</p><p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1fqdqt9an0kj30no03m0to.jpg" alt=""></p><p>客户端：nc -v 192.168.15.142 8210 &lt; package.json</p><p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1fqdqpofoizj30py08y75x.jpg" alt=""></p><p>而此时的服务端，完成文件的接收</p><p><img src="https://ws2.sinaimg.cn/large/006tNc79ly1fqdqrpus4mj30ow05q0ub.jpg" alt=""></p>]]></content>
     
     <summary type="html">
     
-      
-      
-        &lt;h1 id=&quot;初识NC&quot;&gt;&lt;a href=&quot;#初识NC&quot; class=&quot;headerlink&quot; title=&quot;初识NC&quot;&gt;&lt;/a&gt;初识NC&lt;/h1&gt;&lt;p&gt;在升级macOS后，使用telnet命令时发现command not found，于是到google上去查，发现一个更好的命
-      
+      &lt;h1 id=&quot;初识NC&quot;&gt;&lt;a href=&quot;#初识NC&quot; class=&quot;headerlink&quot; title=&quot;初识NC&quot;&gt;&lt;/a&gt;初识NC&lt;/h1&gt;&lt;p&gt;在升级macOS后，使用telnet命令时发现command not found，于是到google上去查，发现一个更好的命令，就是netcat，netcat被称为网络工具中的瑞士军刀，所以觉得有必要学习一下：&lt;/p&gt;
     
     </summary>
     

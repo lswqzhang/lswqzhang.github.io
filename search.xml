@@ -29,7 +29,7 @@
   <entry>
     <title><![CDATA[nc初探]]></title>
     <url>%2F2018%2F02%2F11%2Fnc%E5%88%9D%E6%8E%A2%2F</url>
-    <content type="text"><![CDATA[初识NC在升级macOS后，使用telnet命令时发现command not found，于是到google上去查，发现一个更好的命令，就是netcat，netcat被称为网络工具中的瑞士军刀，所以觉得有必要学习一下：]]></content>
+    <content type="text"><![CDATA[初识NC在升级macOS后，使用telnet命令时发现command not found，于是到google上去查，发现一个更好的命令，就是netcat，netcat被称为网络工具中的瑞士军刀，所以觉得有必要学习一下： nc常用的参数： 1) -l 用于指定nc将处于侦听模式。指定该参数，则意味着nc被当作server，侦听并接受连接，而非向其它地址发起连接。 2) -p 指定nc要使用的端口。若之前已指定-l，则这里的-p指定具体的侦听端口；若未指定-l，则表示向这个端口发起连接。 备注：nc要连接的目的端口可以是具体的整数，也可以直接通过服务名指定，这种情况下，nc会负责将name映射至某个well-known port（可用cat /etc/services查看这些端口跟服务名的映射关系）3) -s 指定发送数据的源IP地址，适用于多网卡机器4) -u 指定nc使用UDP协议，默认为TCP 5) -v 输出交互或出错信息，新手调试时尤为有用 nc扫描端口1nc -v -w 2 192.168.15.142 -z 3306-3307 nc拷贝文件from：192.168.15.142 to：192.168.1.101 服务器端：nc -l -v -p 8210 &gt; lswqzhang.json 客户端：nc -v 192.168.15.142 8210 &lt; package.json 而此时的服务端，完成文件的接收]]></content>
       <categories>
         <category>Linux</category>
         <category>Shell</category>
