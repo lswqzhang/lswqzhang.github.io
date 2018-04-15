@@ -89,10 +89,13 @@
 <meta property="og:site_name" content="流水无情的博客">
 <meta property="og:description" content="MySql5.7安装过程： ==拷贝mysql压缩到local目录==  cp /home/soft/MySQL-5.7.15-Linux-glibc2.5-x86_64.tar.gz /usr/local/   ==进入local目录==  cd /usr/local/   ==解压mysql压缩包==  tar -xzvf mysql-5.7.15-linux-glibc2.5-x86_64.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-10T16:53:02.796Z">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79ly1fqdob98cfxj30fk084mxz.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fqdo6js007j30z00b0q57.jpg">
+<meta property="og:updated_time" content="2018-04-15T13:49:24.149Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="安装MySql5.7">
 <meta name="twitter:description" content="MySql5.7安装过程： ==拷贝mysql压缩到local目录==  cp /home/soft/MySQL-5.7.15-Linux-glibc2.5-x86_64.tar.gz /usr/local/   ==进入local目录==  cd /usr/local/   ==解压mysql压缩包==  tar -xzvf mysql-5.7.15-linux-glibc2.5-x86_64.">
+<meta name="twitter:image" content="https://ws4.sinaimg.cn/large/006tNc79ly1fqdob98cfxj30fk084mxz.jpg">
 
 
 
@@ -541,11 +544,21 @@
 </ol>
 </li>
 <li>==远程登录==<ol>
-<li>grant all privileges on <em>.</em> to <a href="mailto:root@&#39;%&#39;" target="_blank" rel="noopener">root@’%’</a> identified by ‘A123456’;</li>
+<li>grant all privileges on *.* to <a href="mailto:root@&#39;%&#39;" target="_blank" rel="noopener">root@’%’</a> identified by ‘A123456’;</li>
 </ol>
 </li>
-<li>==flush privileges;==</li>
+<li>==生效设置==<ol>
+<li>flush privileges;</li>
 </ol>
+</li>
+</ol>
+<h1 id="开启bin-log日志"><a href="#开启bin-log日志" class="headerlink" title="开启bin-log日志"></a>开启bin-log日志</h1><h3 id="查看是否开启bin-log日志"><a href="#查看是否开启bin-log日志" class="headerlink" title="查看是否开启bin-log日志"></a>查看是否开启bin-log日志</h3><p>查看是否开始bin-log日志</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79ly1fqdob98cfxj30fk084mxz.jpg" alt=""></p>
+<p>查询log_bin详细信息：</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1fqdo6js007j30z00b0q57.jpg" alt="bin-log"></p>
+<p>如图表示开启bin-log日志</p>
+<p>开启bin-log的配置：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 开启bin-log</span><br><span class="line">log-bin = /usr/local/mysql/mysql-bin</span><br><span class="line"># bin-log的日志格式</span><br><span class="line"># 设置bin-log的类型，分为1、ROW，2、STATEMENT，3、MIXED</span><br><span class="line">binlog_format = ROW</span><br><span class="line"># 设置bin-log记录类型：</span><br><span class="line"># 设置的值为：binlog_row_image: 1、full，2、minimal，3、noblob</span><br><span class="line">binlog_row_image = FULL</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -729,7 +742,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MySql5-7安装过程："><span class="nav-number">1.</span> <span class="nav-text">MySql5.7安装过程：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#启动MySql"><span class="nav-number">2.</span> <span class="nav-text">启动MySql</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MySql5-7安装过程："><span class="nav-number">1.</span> <span class="nav-text">MySql5.7安装过程：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#启动MySql"><span class="nav-number">2.</span> <span class="nav-text">启动MySql</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#开启bin-log日志"><span class="nav-number">3.</span> <span class="nav-text">开启bin-log日志</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看是否开启bin-log日志"><span class="nav-number">3.0.1.</span> <span class="nav-text">查看是否开启bin-log日志</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

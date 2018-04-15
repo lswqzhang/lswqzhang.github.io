@@ -428,9 +428,13 @@
 
       
         
-          
-          ThreadLocal说明ThreadLocal通过增加资源来保证所有对象的线程安全，如我们有100人填写表格，当我们只有一只笔时，那么大写就只能挨个填写，这时候就需要对笔进行加锁。从另一个角度出发，我们准备100支笔，那就不需要对笔进行加锁，可以很快的完成表格的填写。而ThreadLocal就相当
-          ...
+          <h1 id="ThreadLocal说明"><a href="#ThreadLocal说明" class="headerlink" title="ThreadLocal说明"></a>ThreadLocal说明</h1><p>ThreadLocal通过增加资源来保证所有对象的线程安全，如我们有100人填写表格，当我们只有一只笔时，那么大写就只能挨个填写，这时候就需要对笔进行加锁。从另一个角度出发，我们准备100支笔，那就不需要对笔进行加锁，可以很快的完成表格的填写。而ThreadLocal就相当于每个人有一支笔。</p>
+<p>ThreadLocal提供了线程的局部变量，不是多个线程共有的，ThreadLocal的变量在被多个线程使用时候，每个线程只能拿到该变量的一个独立的副本，各个线程之前的操作没有任何影响。没有线程共享变量的问题</p>
+<ul>
+<li>不是解决变量共享的问题</li>
+<li>独立的实例副本</li>
+<li>没有同步问题，和synchronized没有关系</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/02/25/ThreadLocal详解/#more" rel="contents">
