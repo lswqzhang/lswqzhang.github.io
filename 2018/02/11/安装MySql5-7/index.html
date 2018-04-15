@@ -94,7 +94,7 @@
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fqdpgrj0zhj30js06w3za.jpg">
 <meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79ly1fqdpik77g5j30lg06o3za.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fqdpf0olsjj30ik08agmx.jpg">
-<meta property="og:updated_time" content="2018-04-15T14:26:55.728Z">
+<meta property="og:updated_time" content="2018-04-15T14:28:58.584Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="安装MySql5.7">
 <meta name="twitter:description" content="MySql5.7安装及设置优化：mysql5.7安装及优化，本文档基于mysql-5.7.15-linux-glibc2.5-x86_64.tar，并且完全经过测试。">
@@ -502,27 +502,21 @@
 <h1 id="启动MySql"><a href="#启动MySql" class="headerlink" title="启动MySql"></a>启动MySql</h1><ol>
 <li><p><strong>启动Mysql</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/mysqld start</span><br></pre></td></tr></table></figure>
-<p>​</p>
 </li>
 <li><p><strong>查看mysql状态</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/mysqld status</span><br></pre></td></tr></table></figure>
-<p>​</p>
 </li>
 <li><p><strong>登录mysql</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root –p</span><br></pre></td></tr></table></figure>
-<p>​</p>
 </li>
 <li><p><strong>修改密码</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set password=password('qian221')</span><br></pre></td></tr></table></figure>
-<p>​</p>
 </li>
 <li><p><strong>远程登录</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on *.* to root@'%' identified by 'qian221';</span><br></pre></td></tr></table></figure>
-<p>​</p>
 </li>
 <li><p><strong>生效设置</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-<p>​</p>
 </li>
 </ol>
 <h1 id="开启bin-log日志"><a href="#开启bin-log日志" class="headerlink" title="开启bin-log日志"></a>开启bin-log日志</h1><h3 id="查看是否开启bin-log日志"><a href="#查看是否开启bin-log日志" class="headerlink" title="查看是否开启bin-log日志"></a>查看是否开启bin-log日志</h3><p>查看是否开始bin-log日志:<strong>show master logs;</strong></p>
