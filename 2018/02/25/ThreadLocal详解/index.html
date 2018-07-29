@@ -91,7 +91,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79ly1fosiwihn5gj31900nu457.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79ly1fosk0gqneaj315u0dsgnc.jpg">
-<meta property="og:updated_time" content="2018-03-23T14:04:51.138Z">
+<meta property="og:updated_time" content="2018-04-16T16:04:34.651Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ThreadLocal详解">
 <meta name="twitter:description" content="ThreadLocal说明ThreadLocal通过增加资源来保证所有对象的线程安全，如我们有100人填写表格，当我们只有一只笔时，那么大写就只能挨个填写，这时候就需要对笔进行加锁。从另一个角度出发，我们准备100支笔，那就不需要对笔进行加锁，可以很快的完成表格的填写。而ThreadLocal就相当于每个人有一支笔。 ThreadLocal提供了线程的局部变量，不是多个线程共有的，ThreadLo">
@@ -464,7 +464,7 @@
 <li>每个线程需要有自己单独的实例</li>
 <li>不希望被多线程共享数据</li>
 </ul>
-<h1 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h1><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
 <li>ThreadLocal 并不解决线程间共享数据的问题</li>
 <li>ThreadLocal 通过隐式的在不同线程内创建独立实例副本避免了实例线程安全的问题</li>
 <li>每个线程持有一个 Map 并维护了 ThreadLocal 对象与具体实例的映射，该 Map 由于只被持有它的线程访问，故不存在线程安全以及锁的问题</li>
@@ -513,6 +513,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/16/ForkJoin的使用/" rel="prev" title="ForkJoin的使用">
+                ForkJoin的使用 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -589,7 +593,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -600,7 +604,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -611,7 +615,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -651,7 +655,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ThreadLocal说明"><span class="nav-number">1.</span> <span class="nav-text">ThreadLocal说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ThreadLocal简单的使用"><span class="nav-number">2.</span> <span class="nav-text">ThreadLocal简单的使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ThreadLocal实现分析"><span class="nav-number">3.</span> <span class="nav-text">ThreadLocal实现分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#jdk1-3中ThreadLocal的实现"><span class="nav-number">3.1.</span> <span class="nav-text">jdk1.3中ThreadLocal的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jdk1-8中ThreadLocal实现"><span class="nav-number">3.2.</span> <span class="nav-text">jdk1.8中ThreadLocal实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ThreadLocal内存泄漏"><span class="nav-number">3.3.</span> <span class="nav-text">ThreadLocal内存泄漏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#防止内存泄漏"><span class="nav-number">3.4.</span> <span class="nav-text">防止内存泄漏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK8垃圾回收"><span class="nav-number">3.5.</span> <span class="nav-text">JDK8垃圾回收</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#适用场景："><span class="nav-number">4.</span> <span class="nav-text">适用场景：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#案例"><span class="nav-number">5.</span> <span class="nav-text">案例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ThreadLocal说明"><span class="nav-number">1.</span> <span class="nav-text">ThreadLocal说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ThreadLocal简单的使用"><span class="nav-number">2.</span> <span class="nav-text">ThreadLocal简单的使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ThreadLocal实现分析"><span class="nav-number">3.</span> <span class="nav-text">ThreadLocal实现分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#jdk1-3中ThreadLocal的实现"><span class="nav-number">3.1.</span> <span class="nav-text">jdk1.3中ThreadLocal的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jdk1-8中ThreadLocal实现"><span class="nav-number">3.2.</span> <span class="nav-text">jdk1.8中ThreadLocal实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ThreadLocal内存泄漏"><span class="nav-number">3.3.</span> <span class="nav-text">ThreadLocal内存泄漏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#防止内存泄漏"><span class="nav-number">3.4.</span> <span class="nav-text">防止内存泄漏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK8垃圾回收"><span class="nav-number">3.5.</span> <span class="nav-text">JDK8垃圾回收</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#适用场景："><span class="nav-number">4.</span> <span class="nav-text">适用场景：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
